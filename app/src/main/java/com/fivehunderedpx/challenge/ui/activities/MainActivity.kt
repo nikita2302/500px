@@ -1,6 +1,5 @@
 package com.fivehunderedpx.challenge.ui.activities
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -12,10 +11,13 @@ import com.fivehunderedpx.challenge.ui.viewmodels.MainActivityViewModel
 import com.fivehunderedpx.challenge.R
 import com.fivehunderedpx.challenge.ui.adapters.PhotoClickListener
 import com.fivehunderedpx.challenge.ui.adapters.PhotoGalleryAdapter
+import com.fivehunderedpx.challenge.ui.fragments.PhotoDetailFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
+@Suppress("UNCHECKED_CAST")
 class MainActivity : AppCompatActivity(), PhotoClickListener {
-    private lateinit var mainActivityViewModel: MainActivityViewModel
+    lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var photoGalleryAdapter: PhotoGalleryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,26 +33,27 @@ class MainActivity : AppCompatActivity(), PhotoClickListener {
         photo_gallery_recycler_view.layoutManager = GridLayoutManager(this, Constants.SPAN_COUNT)
         photoGalleryAdapter = PhotoGalleryAdapter(this, this)
         photo_gallery_recycler_view.adapter = photoGalleryAdapter
-        setObservers()
 
-        //addNewFragment(PhotoGalleryFragment.newInstance(), Constants.PHOTO_GALLERY_FRAGMENT)
+        setObservers()
     }
 
     private fun setObservers(){
         mainActivityViewModel.photoGalleryList.observe(this, Observer {
             photoGalleryAdapter.submitList(it)
         })
+
+        mainActivityViewModel.photoGalleryPagedListError.observe(this, Observer {
+            Snackbar.make(
+                activity_layout,
+                getString(R.string.try_again),
+                Snackbar.LENGTH_LONG
+            ).show()
+        })
     }
 
-    override fun onPhotoClicked(photoID: Int) {
-
+    override fun onPhotoClicked(position: Int) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val fragment = PhotoDetailFragment.newInstance(position)
+        fragment.show(fragmentTransaction, Constants.PHOTO_DETAIL_FRAGMENT)
     }
-
-    /* fun addNewFragment(fragment: Fragment, tag: String) {
-         supportFragmentManager.beginTransaction()
-             .replace(R.id.fragment_container, fragment, tag)
-             .addToBackStack(null)
-             .commit()
-     }*/
-
 }

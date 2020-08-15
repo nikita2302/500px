@@ -13,5 +13,10 @@ object Constants {
     const val SPAN_COUNT = 2
 
     //Fragment Tags
-    const val PHOTO_GALLERY_FRAGMENT = "photoGalleryFragment"
+    const val PHOTO_DETAIL_FRAGMENT = "photoDetailFragment"
+
+    //Fragment Parameters
+    const val POSITION = "position"
+
+    const val MIN_SCALE = 0.75f
 }

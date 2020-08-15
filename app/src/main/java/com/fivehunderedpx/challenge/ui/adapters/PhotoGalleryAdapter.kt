@@ -13,7 +13,7 @@ import com.fivehunderedpx.challenge.R
 import com.fivehunderedpx.challenge.model.Photo
 import kotlinx.android.synthetic.main.photo_gallery_image.view.*
 
-class PhotoGalleryAdapter(private val context: Context, private val photoClickListener: PhotoClickListener) : PagedListAdapter<Photo, PhotoGalleryViewHolder>(PhotoGalleryDiffCallBack()) {
+class PhotoGalleryAdapter(private val context: Context, private val photoClickListener: PhotoClickListener) : PagedListAdapter<Photo, PhotoGalleryViewHolder>(PhotoGalleryDiffCallBack()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoGalleryViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val inflatedView = inflater.inflate(R.layout.photo_gallery_image, parent, false)
@@ -37,7 +37,7 @@ class PhotoGalleryAdapter(private val context: Context, private val photoClickLi
                     .into(itemView.ivGalleryImage)*/
 
                 ivGalleryImage.setOnClickListener {
-                    photoClickListener.onPhotoClicked(photo.id)
+                    photoClickListener.onPhotoClicked(position)
                 }
             }
         }
@@ -59,5 +59,5 @@ class PhotoGalleryDiffCallBack : DiffUtil.ItemCallback<Photo>() {
 }
 
 interface PhotoClickListener {
-    fun onPhotoClicked(photoID: Int)
+    fun onPhotoClicked(position: Int)
 }

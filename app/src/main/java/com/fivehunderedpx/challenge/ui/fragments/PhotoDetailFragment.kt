@@ -1,33 +1,42 @@
 package com.fivehunderedpx.challenge.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
+import androidx.viewpager.widget.ViewPager
+import com.fivehunderedpx.challenge.Constants
 import com.fivehunderedpx.challenge.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.fivehunderedpx.challenge.ui.ZoomOutPageTransformer
+import com.fivehunderedpx.challenge.ui.activities.MainActivity
+import com.fivehunderedpx.challenge.ui.adapters.PhotoPagerAdapter
+import kotlinx.android.synthetic.main.fragment_photo_detail.view.*
 
 /**
  * A simple [Fragment] subclass.
  * Use the [PhotoDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PhotoDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class PhotoDetailFragment : DialogFragment() {
+    private var position: Int = 0
+    private lateinit var layout: View
+    lateinit var photoPagerAdapter: PhotoPagerAdapter
+    private lateinit var _context: Context
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        _context = context
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            position = it.getInt(Constants.POSITION)
         }
+        setStyle(STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
     }
 
     override fun onCreateView(
@@ -35,8 +44,38 @@ class PhotoDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photo_detail, container, false)
+        layout = inflater.inflate(R.layout.fragment_photo_detail, container, false)
+        photoPagerAdapter = PhotoPagerAdapter(_context, (activity as MainActivity).mainActivityViewModel.photoGalleryList)
+        layout.photo_viewpager.adapter  = photoPagerAdapter
+        layout.photo_viewpager.setCurrentItem(position, false)
+        layout.photo_viewpager.addOnPageChangeListener(viewPagerPageChangeListener)
+        layout.photo_viewpager.setPageTransformer(true, ZoomOutPageTransformer())
+        val photo = (activity as MainActivity).mainActivityViewModel.photoGalleryList.value?.get(position)
+        if(photo != null) {
+            layout.photo_title.text = photo.name
+            layout.photo_description.text = photo.description
+        }
+        return layout
     }
+
+    var viewPagerPageChangeListener: ViewPager.OnPageChangeListener =
+        object : ViewPager.OnPageChangeListener {
+
+            override fun onPageSelected(position: Int) {
+                val photo = (activity as MainActivity).mainActivityViewModel.photoGalleryList.value?.get(position)
+                if(photo != null) {
+                    layout.photo_title.text = photo.name
+                    layout.photo_description.text = photo.description
+                }
+            }
+
+            override fun onPageScrolled(arg0: Int, arg1: Float, arg2: Int) {
+            }
+
+            override fun onPageScrollStateChanged(arg0: Int) {
+            }
+        }
+
 
     companion object {
         /**
@@ -49,11 +88,10 @@ class PhotoDetailFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(position: Int) =
             PhotoDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putInt(Constants.POSITION, position)
                 }
             }
     }
