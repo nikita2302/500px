@@ -28,9 +28,9 @@ object RetrofitBuilder {
 
     //default call timeout is 10 seconds
     private val okHttp = OkHttpClient.Builder()
-       /* .readTimeout(5, TimeUnit.SECONDS)
-        .connectTimeout(5, TimeUnit.SECONDS)
-        .callTimeout(5, TimeUnit.SECONDS)*/
+        .readTimeout(15, TimeUnit.SECONDS)
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .callTimeout(15, TimeUnit.SECONDS)
         .addInterceptor(customHeaderInterceptor)
         .addInterceptor(logger)
 

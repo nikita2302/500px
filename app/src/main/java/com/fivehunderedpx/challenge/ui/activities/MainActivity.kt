@@ -34,11 +34,20 @@ class MainActivity : AppCompatActivity(), PhotoClickListener {
         photoGalleryAdapter = PhotoGalleryAdapter(this, this)
         photo_gallery_recycler_view.adapter = photoGalleryAdapter
 
+        refresh_layout.setOnRefreshListener {
+            mainActivityViewModel.refresh()
+        }
+
         setObservers()
     }
 
     private fun setObservers(){
         mainActivityViewModel.photoGalleryList.observe(this, Observer {
+
+            if (refresh_layout.isRefreshing) {
+                refresh_layout.isRefreshing = false;
+            }
+
             photoGalleryAdapter.submitList(it)
         })
 
