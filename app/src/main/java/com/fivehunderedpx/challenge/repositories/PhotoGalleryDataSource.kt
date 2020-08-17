@@ -61,6 +61,11 @@ class PhotoGalleryDataSource(private val scope: CoroutineScope): PageKeyedDataSo
         }
     }
 
+    /**
+     * Have not overridden load before since the recycler view will hold the data
+     * I have also tested this and while scrolling up data is always present
+     * and shows up on the screen in correct order
+     */
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
     }
 }

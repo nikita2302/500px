@@ -1,5 +1,10 @@
 package com.fivehunderedpx.challenge
 
+/**
+* A singleton class containing all the constants used in the app.
+* All string constants that might require translation should not be added here they
+* should be part of strings.xml file.
+*/
 object Constants {
 
     const val BASE_URL = "https://api.500px.com"

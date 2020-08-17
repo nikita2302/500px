@@ -1,7 +1,6 @@
 package com.fivehunderedpx.challenge.ui.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,10 @@ import com.fivehunderedpx.challenge.R
 import com.fivehunderedpx.challenge.model.Photo
 import kotlinx.android.synthetic.main.photo_gallery_image.view.*
 
+/**
+ * Adapter to display grid of photos.
+ * The photo grid implements paging and displays 20 photos at a time before loading more
+ */
 class PhotoGalleryAdapter(private val context: Context, private val photoClickListener: PhotoClickListener) : PagedListAdapter<Photo, PhotoGalleryViewHolder>(PhotoGalleryDiffCallBack()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoGalleryViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -24,17 +27,10 @@ class PhotoGalleryAdapter(private val context: Context, private val photoClickLi
         val photo = getItem(position)
 
         if(photo != null) {
-            Log.d("debug", "$photo")
             holder.apply {
 
                 Glide.with(ivGalleryImage.context).load(photo.imageUrl[0])
                     .into(ivGalleryImage)
-
-          /*      GlideApp.with(context!!)
-                    .load(image.imageUrl)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(itemView.ivGalleryImage)*/
 
                 ivGalleryImage.setOnClickListener {
                     photoClickListener.onPhotoClicked(position)

@@ -41,6 +41,10 @@ class MainActivity : AppCompatActivity(), PhotoClickListener {
         setObservers()
     }
 
+    /**
+    * Function to observe all the viewModel live data.
+    * This helps to keep the onCreate method clean
+    */
     private fun setObservers(){
         mainActivityViewModel.photoGalleryList.observe(this, Observer {
 
@@ -60,6 +64,11 @@ class MainActivity : AppCompatActivity(), PhotoClickListener {
         })
     }
 
+    /**
+     * Overridden Method of PhotoClickListener Interface
+     * This handles the case when the image is clicked on the grid view to display a
+     * full screen view with image details
+     */
     override fun onPhotoClicked(position: Int) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         val fragment = PhotoDetailFragment.newInstance(position)

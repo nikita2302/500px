@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
 import com.fivehunderedpx.challenge.Constants
 import com.fivehunderedpx.challenge.R
+import com.fivehunderedpx.challenge.model.Photo
 import com.fivehunderedpx.challenge.ui.ZoomOutPageTransformer
 import com.fivehunderedpx.challenge.ui.activities.MainActivity
 import com.fivehunderedpx.challenge.ui.adapters.PhotoPagerAdapter
@@ -45,16 +46,19 @@ class PhotoDetailFragment : DialogFragment() {
     ): View? {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_photo_detail, container, false)
+
         photoPagerAdapter = PhotoPagerAdapter(_context, (activity as MainActivity).mainActivityViewModel.photoGalleryList)
+
         layout.photo_viewpager.adapter  = photoPagerAdapter
         layout.photo_viewpager.setCurrentItem(position, false)
         layout.photo_viewpager.addOnPageChangeListener(viewPagerPageChangeListener)
         layout.photo_viewpager.setPageTransformer(true, ZoomOutPageTransformer())
+
         val photo = (activity as MainActivity).mainActivityViewModel.photoGalleryList.value?.get(position)
         if(photo != null) {
-            layout.photo_title.text = photo.name
-            layout.photo_description.text = photo.description
+            displayPhotoDetails(photo)
         }
+
         return layout
     }
 
@@ -64,8 +68,7 @@ class PhotoDetailFragment : DialogFragment() {
             override fun onPageSelected(position: Int) {
                 val photo = (activity as MainActivity).mainActivityViewModel.photoGalleryList.value?.get(position)
                 if(photo != null) {
-                    layout.photo_title.text = photo.name
-                    layout.photo_description.text = photo.description
+                    displayPhotoDetails(photo)
                 }
             }
 
@@ -76,14 +79,21 @@ class PhotoDetailFragment : DialogFragment() {
             }
         }
 
+    /**
+     * Function to display photo details
+     *
+     * @param photo GSON Model containing details about the photo
+     */
+    fun displayPhotoDetails(photo: Photo) {
+        layout.photo_title.text = photo.name
+        layout.photo_description.text = photo.description
+    }
 
     companion object {
         /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
+         * This creates a new instance of PhotoDetailFragment
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
+         * @param position Position of the image clicked to display details.
          * @return A new instance of fragment PhotoDetailFragment.
          */
         // TODO: Rename and change types and number of parameters

@@ -8,7 +8,13 @@ import androidx.paging.PagedList
 import com.fivehunderedpx.challenge.model.Photo
 import com.fivehunderedpx.challenge.repositories.PhotoGalleryDataSource
 
-class MainActivityViewModel(val pageSize: Int): ViewModel() {
+/**
+ * View Model for the MainActivity
+ * Photo details screens should also be able to scroll images to provide better user experience.
+ * Therefore PhotoDetailFragment also access the photoGalleryList
+ * Usually I prefer to have a separate viewModel between the Activity and the Fragment
+ */
+class MainActivityViewModel(pageSize: Int): ViewModel() {
     var photoGalleryList: LiveData<PagedList<Photo>>
     var photoGalleryPagedListError: LiveData<String>
     private lateinit var photoGalleryDataSource: PhotoGalleryDataSource

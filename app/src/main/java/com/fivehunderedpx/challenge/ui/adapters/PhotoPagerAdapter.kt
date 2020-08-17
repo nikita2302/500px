@@ -12,6 +12,11 @@ import com.fivehunderedpx.challenge.R
 import com.fivehunderedpx.challenge.model.Photo
 import kotlinx.android.synthetic.main.image_view_pager.view.*
 
+/**
+ * Photo Pager Adapter to display full screen view of photos with details such as Title
+ * and description
+ * This adapter also uses the photoGalleryList from the MainActivityViewModel
+ */
 class PhotoPagerAdapter(private val context: Context, private val photoList: LiveData<PagedList<Photo>>) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
