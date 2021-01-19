@@ -1,6 +1,6 @@
-# 500px Android Developer Coding Challenge
+# App to display image gallery using 500px API
 
-It was a fun and easy challenge to create a photo app using the 500px GET API https://github.com/500px/legacy-api-documentation/blob/master/endpoints/photo/GET_photos.md. 
+Create a photo app using the 500px GET API https://github.com/500px/legacy-api-documentation/blob/master/endpoints/photo/GET_photos.md. 
 First screen should display a grid of images and clicking on any image should display the details with a full screen view of the image.
 
 The app has been developed in Kotlin using coroutines, okHttp, retrofit, Android Architecture Components and MVVM architecture.
